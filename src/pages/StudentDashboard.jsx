@@ -15,18 +15,25 @@ export default function StudentDashboard() {
     }
 
     try {
-      await api.post("/feedback", {
+      // Make sure rating is number and payload matches backend model
+      const payload = {
         course,
-        rating,
+        rating: Number(rating),
         comment
-      });
+      };
+
+      const res = await api.post("/feedback", payload);
 
       setMessage("✅ Feedback submitted successfully");
       setCourse("");
       setRating(0);
       setComment("");
     } catch (err) {
-      alert("Failed to submit feedback");
+      // Show detailed error from backend if available
+      const errMsg =
+        err.response?.data?.message || "Failed to submit feedback";
+      alert(errMsg);
+      console.error("Feedback submission error:", err.response || err);
     }
   };
 
