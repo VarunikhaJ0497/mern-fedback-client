@@ -1,16 +1,16 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api"
+  baseURL: process.env.REACT_APP_API_URL || "https://mern-feedback-backend-qk30.onrender.com/api"
 });
 
-// attach token automatically
 api.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");
   if (token) {
-    req.headers.Authorization = token;
+    req.headers.Authorization = `Bearer ${token}`;
   }
   return req;
 });
 
 export default api;
+
